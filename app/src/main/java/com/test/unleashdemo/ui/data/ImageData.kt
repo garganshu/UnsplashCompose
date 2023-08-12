@@ -1,3 +1,3 @@
 package com.test.unleashdemo.ui.data
 
-data class ImageData(private val imageUrl: String?)
+data class ImageData(val imageUrl: String?)
