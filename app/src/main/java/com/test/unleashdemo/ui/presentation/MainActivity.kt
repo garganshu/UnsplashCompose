@@ -1,22 +1,18 @@
 package com.test.unleashdemo.ui.presentation
 
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
-import com.test.unleashdemo.BuildConfig
-import com.test.unleashdemo.R
+import androidx.activity.ComponentActivity
 import com.test.unleashdemo.utils.ViewState
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
-class MainActivity : AppCompatActivity() {
+class MainActivity : ComponentActivity() {
 
     private val viewModel : MainViewModel by viewModel()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_main)
         setUpView()
-
     }
 
     private fun setUpView() {
