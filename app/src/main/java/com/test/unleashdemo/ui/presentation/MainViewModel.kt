@@ -3,6 +3,7 @@ package com.test.unleashdemo.ui.presentation
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.test.unleashdemo.ui.data.ImageData
+import com.test.unleashdemo.ui.data.emptyImage
 import com.test.unleashdemo.ui.domain.MainRepository
 import com.test.unleashdemo.utils.UnleashResponse
 import com.test.unleashdemo.utils.ViewState
@@ -17,6 +18,9 @@ class MainViewModel(
     private val _dataFlow: MutableStateFlow<ViewState<List<ImageData>>> = MutableStateFlow(ViewState.Loading(setLoading = true))
     val dataFlow: StateFlow<ViewState<List<ImageData>>> = _dataFlow
 
+    private val _imageDataFlow: MutableStateFlow<ImageData> = MutableStateFlow(emptyImage())
+    val imageDataFlow: StateFlow<ImageData> = _imageDataFlow
+
     fun fetchData() {
         viewModelScope.launch {
             val viewState = when (val response = repository.getData()) {
@@ -28,6 +32,12 @@ class MainViewModel(
                 }
             }
             _dataFlow.emit(viewState)
+        }
+    }
+
+    fun selectImage(image: ImageData) {
+        viewModelScope.launch {
+            _imageDataFlow.emit(image)
         }
     }
 }
