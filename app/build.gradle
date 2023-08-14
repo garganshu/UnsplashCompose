@@ -13,7 +13,10 @@ android {
         versionCode 1
         versionName "1.0"
 
+        buildConfigField("String", "UNSPLASH_API_URL", UNSPLASH_API_URL)
         buildConfigField("String", "UNSPLASH_KEY", UNSPLASH_KEY)
+        buildConfigField("String", "UNLEASH_API_URL", UNLEASH_API_URL)
+        buildConfigField("String", "UNLEASH_CLIENT_KEY", UNLEASH_CLIENT_KEY)
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         vectorDrawables {
@@ -69,5 +72,8 @@ dependencies {
     debugImplementation "androidx.compose.ui:ui-tooling:$compose_version"
     debugImplementation "androidx.compose.ui:ui-test-manifest:$compose_version"
     implementation "io.coil-kt:coil-compose:2.0.0-alpha04"
+
+    //unleash
+    implementation 'io.getunleash:unleash-android-proxy-sdk:0.5.5'
 
 }

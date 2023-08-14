@@ -12,7 +12,6 @@ class UnleashApplication : Application() {
         super.onCreate()
 
         startKoin {
-            androidLogger()
             androidContext(this@UnleashApplication)
             modules(appModule)
         }

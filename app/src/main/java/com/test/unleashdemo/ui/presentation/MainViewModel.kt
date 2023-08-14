@@ -21,6 +21,9 @@ class MainViewModel(
     private val _imageDataFlow: MutableStateFlow<ImageData> = MutableStateFlow(emptyImage())
     val imageDataFlow: StateFlow<ImageData> = _imageDataFlow
 
+    private val _imageDetailsToggleListener: MutableStateFlow<Boolean> = MutableStateFlow(false)
+    val imageDetailsToggleListener: StateFlow<Boolean> = _imageDetailsToggleListener
+
     fun fetchData() {
         viewModelScope.launch {
             val viewState = when (val response = repository.getData()) {
@@ -38,6 +41,13 @@ class MainViewModel(
     fun selectImage(image: ImageData) {
         viewModelScope.launch {
             _imageDataFlow.emit(image)
+        }
+    }
+
+    fun getImageDetailsToggleState() {
+        viewModelScope.launch {
+            val isEnabled = repository.isImageDetailsToggleEnabled()
+            _imageDetailsToggleListener.emit(isEnabled)
         }
     }
 }

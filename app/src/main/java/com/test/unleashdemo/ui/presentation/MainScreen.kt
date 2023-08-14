@@ -27,7 +27,8 @@ fun MainScreen(
     imageDataList: ViewState<List<ImageData>>,
     selectedImage: ImageData,
     onFinish: () -> Unit,
-    onSelectItem: (ImageData) -> Unit
+    onSelectItem: (ImageData) -> Unit,
+    isImageDetailsEnabled: Boolean
 ) {
     BottomSheetScreen(sheetContent = {
         Column(
@@ -45,12 +46,14 @@ fun MainScreen(
     },
         content = { scope, state ->
             ContentScreen(viewState = imageDataList, onItemClick = { selectedImage ->
-                onSelectItem(selectedImage)
-                scope.launch {
-                    if (state.isVisible) {
-                        state.hide()
-                    } else {
-                        state.show()
+                if(isImageDetailsEnabled) {
+                    onSelectItem(selectedImage)
+                    scope.launch {
+                        if (state.isVisible) {
+                            state.hide()
+                        } else {
+                            state.show()
+                        }
                     }
                 }
             })
