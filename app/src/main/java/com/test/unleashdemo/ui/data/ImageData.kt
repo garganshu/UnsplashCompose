@@ -7,6 +7,3 @@ data class ImageData(
     val contentDescription: String?,
     val likes: String?
 )
-
-fun emptyImage() =
-    ImageData(url = null, id = "", description = null, contentDescription = null, likes = null)

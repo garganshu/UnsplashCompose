@@ -14,24 +14,16 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         setContent {
             val dataState = viewModel.dataFlow.collectAsState().value
-            val imageData = viewModel.imageDataFlow.collectAsState().value
-            val isImageDetailsToggleEnabled =
-                viewModel.imageDetailsToggleListener.collectAsState().value
+            val isImageDetailsEnabled = viewModel.isImageDetailsEnabled
             MainScreen(
                 imageDataList = dataState,
-                selectedImage = imageData,
                 onFinish = { finish() },
-                onSelectItem = {
-                    if (isImageDetailsToggleEnabled) {
-                        viewModel.selectImage(it)
-                    }
+                isDetailsEnabled = {
+                    viewModel.fetchImageDetailsState()
+                    isImageDetailsEnabled.value
                 },
-                isImageDetailsEnabled = isImageDetailsToggleEnabled
             )
         }
-        viewModel.run {
-            fetchData()
-            getImageDetailsToggleState()
-        }
+        viewModel.fetchData()
     }
 }

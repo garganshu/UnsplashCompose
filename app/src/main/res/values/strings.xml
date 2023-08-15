@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">UnleashDemo</string>
+    <string name="flag_disabled">Unleash Image Details Flag Disabled</string>
 </resources>

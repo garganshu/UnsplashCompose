@@ -3,7 +3,6 @@ package com.test.unleashdemo.ui.presentation
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.test.unleashdemo.ui.data.ImageData
-import com.test.unleashdemo.ui.data.emptyImage
 import com.test.unleashdemo.ui.domain.MainRepository
 import com.test.unleashdemo.utils.UnleashResponse
 import com.test.unleashdemo.utils.ViewState
@@ -15,14 +14,12 @@ class MainViewModel(
     private val repository: MainRepository
 ) : ViewModel() {
 
-    private val _dataFlow: MutableStateFlow<ViewState<List<ImageData>>> = MutableStateFlow(ViewState.Loading(setLoading = true))
+    private val _dataFlow: MutableStateFlow<ViewState<List<ImageData>>> =
+        MutableStateFlow(ViewState.Loading(setLoading = true))
     val dataFlow: StateFlow<ViewState<List<ImageData>>> = _dataFlow
 
-    private val _imageDataFlow: MutableStateFlow<ImageData> = MutableStateFlow(emptyImage())
-    val imageDataFlow: StateFlow<ImageData> = _imageDataFlow
-
-    private val _imageDetailsToggleListener: MutableStateFlow<Boolean> = MutableStateFlow(false)
-    val imageDetailsToggleListener: StateFlow<Boolean> = _imageDetailsToggleListener
+    private val _isImageDetailsEnabled: MutableStateFlow<Boolean> = MutableStateFlow(false)
+    val isImageDetailsEnabled: StateFlow<Boolean> = _isImageDetailsEnabled
 
     fun fetchData() {
         viewModelScope.launch {
@@ -38,16 +35,10 @@ class MainViewModel(
         }
     }
 
-    fun selectImage(image: ImageData) {
-        viewModelScope.launch {
-            _imageDataFlow.emit(image)
-        }
-    }
-
-    fun getImageDetailsToggleState() {
+    fun fetchImageDetailsState() {
         viewModelScope.launch {
             val isEnabled = repository.isImageDetailsToggleEnabled()
-            _imageDetailsToggleListener.emit(isEnabled)
+            _isImageDetailsEnabled.value = isEnabled
         }
     }
 }
