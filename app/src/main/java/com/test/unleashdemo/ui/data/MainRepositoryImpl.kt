@@ -14,4 +14,8 @@ class MainRepositoryImpl(
             mapper.toImageDataList(imageDataModelList = it)
         }
     }
+
+    override suspend fun isImageDetailsToggleEnabled(): Boolean {
+        return remoteDataStore.isImageDetailsToggleEnabled()
+    }
 }
