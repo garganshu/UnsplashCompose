@@ -15,7 +15,7 @@ class MainRemoteDataStoreImpl(
     }
 
     override suspend fun isImageDetailsToggleEnabled(): Boolean {
-        return unleashClient.isEnabled("ImageDetailsEnabled", false)
+        return unleashClient.isEnabled("ImageDetailsEnabled", true)
     }
 
 }

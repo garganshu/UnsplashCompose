@@ -1,6 +1,7 @@
 package com.test.unleashdemo.ui.presentation
 
 import android.widget.Toast
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
@@ -22,7 +23,7 @@ import com.test.unleashdemo.utils.ViewState
 @Composable
 fun ContentScreen(
     viewState: ViewState<List<ImageData>>,
-    onItemClick: (ImageData) -> Unit
+    onItemClick: (ImageData) -> Unit,
 ) {
     val context = LocalContext.current
     Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
@@ -51,13 +52,13 @@ fun ContentScreen(
                         Card(
                             modifier = Modifier
                                 .fillMaxWidth()
-                                .height(250.dp)
-                                .clickable {
-                                    onItemClick(image)
-                                },
+                                .height(250.dp),
                             shape = RoundedCornerShape(8.dp)
                         ) {
                             AsyncImage(
+                                modifier = Modifier.clickable {
+                                    onItemClick(image)
+                                },
                                 model = image.url,
                                 contentDescription = image.contentDescription,
                                 contentScale = ContentScale.Crop

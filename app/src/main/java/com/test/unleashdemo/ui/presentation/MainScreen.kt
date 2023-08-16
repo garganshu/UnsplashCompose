@@ -2,10 +2,9 @@ package com.test.unleashdemo.ui.presentation
 
 import android.widget.Toast
 import androidx.activity.compose.BackHandler
-import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.Image
+import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.*
 import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.material.Text
 import androidx.compose.runtime.*
@@ -13,6 +12,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.ExperimentalUnitApi
 import androidx.compose.ui.unit.TextUnit
@@ -39,32 +39,48 @@ fun MainScreen(
             horizontalAlignment = Alignment.CenterHorizontally,
             verticalArrangement = Arrangement.Center
         ) {
-            TextData(text = selectedImage.value?.id, textSize = 22f)
+            Row(modifier = Modifier.align(Alignment.CenterHorizontally)) {
+                TextData(text = selectedImage.value?.id, textSize = 22f)
+                Image(
+                    modifier = Modifier
+                        .requiredSizeIn(4.dp, 4.dp, 64.dp, 64.dp)
+                        .padding(6.dp)
+                        .clickable {
+                            selectedImage.value?.let {
+                                viewModel.downloadImage(it)
+                            }
+                        },
+                    painter = painterResource(id = R.drawable.ic_download),
+                    contentDescription = null
+                )
+            }
             TextData(text = selectedImage.value?.contentDescription, textSize = 18f)
             TextData(text = selectedImage.value?.description, textSize = 16f)
             AsyncImage(model = selectedImage.value?.url, contentDescription = null)
         }
     },
         content = { scope, state ->
-            ContentScreen(viewState = viewModel.dataFlow.collectAsState().value, onItemClick = { image ->
-                viewModel.fetchImageDetailsState()
-                if(viewModel.isImageDetailsEnabled.value) {
-                    selectedImage.value = image
-                    scope.launch {
-                        if (state.isVisible) {
-                            state.hide()
-                        } else {
-                            state.show()
+            ContentScreen(
+                viewState = viewModel.dataFlow.collectAsState().value, onItemClick = { image ->
+                    viewModel.fetchImageDetailsState()
+                    if (viewModel.isImageDetailsEnabled.value) {
+                        selectedImage.value = image
+                        scope.launch {
+                            if (state.isVisible) {
+                                state.hide()
+                            } else {
+                                state.show()
+                            }
                         }
+                    } else {
+                        Toast.makeText(
+                            context,
+                            R.string.flag_disabled,
+                            Toast.LENGTH_LONG
+                        ).show()
                     }
-                } else {
-                    Toast.makeText(
-                        context,
-                        R.string.flag_disabled,
-                        Toast.LENGTH_LONG
-                    ).show()
                 }
-            })
+            )
             BackHandler {
                 scope.launch {
                     if (state.isVisible)
@@ -79,14 +95,19 @@ fun MainScreen(
 
 @OptIn(ExperimentalUnitApi::class)
 @Composable
-private fun TextData(text: String?, textSize: Float) {
+private fun TextData(
+    modifier: Modifier = Modifier,
+    text: String?,
+    textSize: Float,
+    color: Color = Color.Black
+) {
     if (!text.isNullOrEmpty()) {
         Text(
             text = text,
-            color = Color.Black,
+            color = color,
             fontSize = TextUnit(textSize, TextUnitType.Sp),
             textAlign = TextAlign.Center,
-            modifier = Modifier.padding(6.dp)
+            modifier = modifier.padding(6.dp)
         )
     }
 }
