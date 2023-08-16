@@ -2,6 +2,7 @@ package com.test.unleashdemo.ui.presentation
 
 import android.widget.Toast
 import androidx.activity.compose.BackHandler
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -13,6 +14,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.ExperimentalUnitApi
 import androidx.compose.ui.unit.TextUnit
@@ -46,25 +48,28 @@ fun MainScreen(
         }
     },
         content = { scope, state ->
-            ContentScreen(viewState = viewModel.dataFlow.collectAsState().value, onItemClick = { image ->
-                viewModel.fetchImageDetailsState()
-                if(viewModel.isImageDetailsEnabled.value) {
-                    selectedImage.value = image
-                    scope.launch {
-                        if (state.isVisible) {
-                            state.hide()
-                        } else {
-                            state.show()
+            ContentScreen(
+                viewState = viewModel.dataFlow.collectAsState().value, onItemClick = { image ->
+                    viewModel.fetchImageDetailsState()
+                    if (viewModel.isImageDetailsEnabled.value) {
+                        selectedImage.value = image
+                        scope.launch {
+                            if (state.isVisible) {
+                                state.hide()
+                            } else {
+                                state.show()
+                            }
                         }
+                    } else {
+                        Toast.makeText(
+                            context,
+                            R.string.flag_disabled,
+                            Toast.LENGTH_LONG
+                        ).show()
                     }
-                } else {
-                    Toast.makeText(
-                        context,
-                        R.string.flag_disabled,
-                        Toast.LENGTH_LONG
-                    ).show()
-                }
-            })
+                },
+                isDownloadEnable = true
+            )
             BackHandler {
                 scope.launch {
                     if (state.isVisible)
