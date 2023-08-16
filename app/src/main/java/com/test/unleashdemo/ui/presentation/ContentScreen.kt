@@ -1,6 +1,5 @@
 package com.test.unleashdemo.ui.presentation
 
-import android.util.Log
 import android.widget.Toast
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -16,10 +15,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
-import com.test.unleashdemo.R
 import com.test.unleashdemo.ui.data.ImageData
 import com.test.unleashdemo.utils.ViewState
 
@@ -27,7 +24,6 @@ import com.test.unleashdemo.utils.ViewState
 fun ContentScreen(
     viewState: ViewState<List<ImageData>>,
     onItemClick: (ImageData) -> Unit,
-    isDownloadEnable: Boolean
 ) {
     val context = LocalContext.current
     Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
@@ -67,23 +63,6 @@ fun ContentScreen(
                                 contentDescription = image.contentDescription,
                                 contentScale = ContentScale.Crop
                             )
-                            if (isDownloadEnable) {
-                                Box(
-                                    modifier = Modifier.fillMaxSize()
-                                ) {
-                                    Image(
-                                        modifier = Modifier
-                                            .requiredSizeIn(5.dp)
-                                            .align(Alignment.BottomEnd)
-                                            .padding(8.dp)
-                                            .clickable {
-                                                Log.d("Click: ", "Download Start")
-                                            },
-                                        painter = painterResource(id = R.drawable.ic_download),
-                                        contentDescription = null
-                                    )
-                                }
-                            }
                         }
                     }
                 }

@@ -1,7 +1,10 @@
 package com.test.unleashdemo.di
 
+import android.app.DownloadManager
+import android.content.Context
 import com.test.unleashdemo.BuildConfig
 import com.test.unleashdemo.ui.data.*
+import com.test.unleashdemo.ui.domain.ImageDownloader
 import com.test.unleashdemo.ui.domain.ImageMapper
 import com.test.unleashdemo.ui.domain.MainRepository
 import com.test.unleashdemo.ui.presentation.MainViewModel
@@ -26,9 +29,13 @@ val appModule = module {
     single {
         getUnleashClient()
     }
+    single {
+        getDownloadManager(get())
+    }
     factory<MainRemoteDataStore> { MainRemoteDataStoreImpl(get(), get()) }
-    factory<MainRepository> { MainRepositoryImpl(get(), get()) }
+    factory<MainRepository> { MainRepositoryImpl(get(), get(), get()) }
     factory<ImageMapper> { ImageMapperImpl() }
+    factory<ImageDownloader> { ImageDownloaderImpl(get()) }
     viewModel { MainViewModel(get()) }
 }
 
@@ -58,4 +65,8 @@ private fun getUnleashClient(): UnleashClient {
         .build()
 
     return UnleashClient.newBuilder().unleashConfig(config).unleashContext(context).build()
+}
+
+private fun getDownloadManager(context: Context): DownloadManager {
+    return context.getSystemService(DownloadManager::class.java)
 }

@@ -3,10 +3,8 @@ package com.test.unleashdemo.ui.presentation
 import android.widget.Toast
 import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.Image
-import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.*
 import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.material.Text
 import androidx.compose.runtime.*
@@ -41,7 +39,21 @@ fun MainScreen(
             horizontalAlignment = Alignment.CenterHorizontally,
             verticalArrangement = Arrangement.Center
         ) {
-            TextData(text = selectedImage.value?.id, textSize = 22f)
+            Row(modifier = Modifier.align(Alignment.CenterHorizontally)) {
+                TextData(text = selectedImage.value?.id, textSize = 22f)
+                Image(
+                    modifier = Modifier
+                        .requiredSizeIn(4.dp, 4.dp, 64.dp, 64.dp)
+                        .padding(6.dp)
+                        .clickable {
+                            selectedImage.value?.let {
+                                viewModel.downloadImage(it)
+                            }
+                        },
+                    painter = painterResource(id = R.drawable.ic_download),
+                    contentDescription = null
+                )
+            }
             TextData(text = selectedImage.value?.contentDescription, textSize = 18f)
             TextData(text = selectedImage.value?.description, textSize = 16f)
             AsyncImage(model = selectedImage.value?.url, contentDescription = null)
@@ -67,8 +79,7 @@ fun MainScreen(
                             Toast.LENGTH_LONG
                         ).show()
                     }
-                },
-                isDownloadEnable = true
+                }
             )
             BackHandler {
                 scope.launch {
@@ -84,14 +95,19 @@ fun MainScreen(
 
 @OptIn(ExperimentalUnitApi::class)
 @Composable
-private fun TextData(text: String?, textSize: Float) {
+private fun TextData(
+    modifier: Modifier = Modifier,
+    text: String?,
+    textSize: Float,
+    color: Color = Color.Black
+) {
     if (!text.isNullOrEmpty()) {
         Text(
             text = text,
-            color = Color.Black,
+            color = color,
             fontSize = TextUnit(textSize, TextUnitType.Sp),
             textAlign = TextAlign.Center,
-            modifier = Modifier.padding(6.dp)
+            modifier = modifier.padding(6.dp)
         )
     }
 }

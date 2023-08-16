@@ -6,4 +6,5 @@ import com.test.unleashdemo.utils.UnleashResponse
 interface MainRepository {
     suspend fun getData(): UnleashResponse<List<ImageData>>
     suspend fun isImageDetailsToggleEnabled(): Boolean
+    suspend fun downloadImage(imageData: ImageData)
 }

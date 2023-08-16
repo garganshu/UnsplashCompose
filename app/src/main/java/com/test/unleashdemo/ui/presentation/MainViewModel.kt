@@ -41,4 +41,10 @@ class MainViewModel(
             _isImageDetailsEnabled.value = isEnabled
         }
     }
+
+    fun downloadImage(imageData: ImageData) {
+        viewModelScope.launch {
+            repository.downloadImage(imageData)
+        }
+    }
 }
