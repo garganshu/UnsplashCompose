@@ -47,6 +47,7 @@ fun MainScreen(
     },
         content = { scope, state ->
             ContentScreen(viewState = viewModel.dataFlow.collectAsState().value, onItemClick = { image ->
+                viewModel.fetchImageDetailsState()
                 if(viewModel.isImageDetailsEnabled.value) {
                     selectedImage.value = image
                     scope.launch {

@@ -7,11 +7,13 @@ import com.test.unleashdemo.ui.domain.MainRepository
 import com.test.unleashdemo.ui.presentation.MainViewModel
 import io.getunleash.UnleashClient
 import io.getunleash.UnleashConfig
+import io.getunleash.UnleashContext
 import io.getunleash.polling.AutoPollingMode
 import org.koin.androidx.viewmodel.dsl.viewModel
 import org.koin.dsl.module
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
+
 
 val appModule = module {
 
@@ -42,12 +44,18 @@ private fun getApiService(retrofit: Retrofit): ApiService {
 }
 
 private fun getUnleashClient(): UnleashClient {
+    val context = UnleashContext.newBuilder()
+        .appName("UnleashDemo")
+        .build()
 
     val config = UnleashConfig.newBuilder()
+        .appName("UnleashDemo")
+        .enableMetrics()
         .proxyUrl(BuildConfig.UNLEASH_API_URL)
         .clientKey(BuildConfig.UNLEASH_CLIENT_KEY)
         .pollingMode(AutoPollingMode(1000))
+        .metricsInterval(5000)
         .build()
 
-    return UnleashClient.newBuilder().unleashConfig(config).build()
+    return UnleashClient.newBuilder().unleashConfig(config).unleashContext(context).build()
 }
