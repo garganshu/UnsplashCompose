@@ -2,6 +2,7 @@ package com.test.unleashdemo.di
 
 import android.app.DownloadManager
 import android.content.Context
+import com.readystatesoftware.chuck.ChuckInterceptor
 import com.test.unleashdemo.BuildConfig
 import com.test.unleashdemo.ui.data.*
 import com.test.unleashdemo.ui.domain.ImageDownloader
@@ -23,7 +24,7 @@ import retrofit2.converter.gson.GsonConverterFactory
 val appModule = module {
 
     single {
-        getRetrofit()
+        getRetrofit(get())
     }
     single {
         getApiService(get())
@@ -41,9 +42,10 @@ val appModule = module {
     viewModel { MainViewModel(get()) }
 }
 
-private fun getRetrofit(): Retrofit {
+private fun getRetrofit(context: Context): Retrofit {
     val client = OkHttpClient.Builder()
         .addInterceptor(HttpLoggingInterceptor().setLevel(HttpLoggingInterceptor.Level.BODY))
+        .addInterceptor(ChuckInterceptor(context))
         .build()
 
     return Retrofit.Builder()
