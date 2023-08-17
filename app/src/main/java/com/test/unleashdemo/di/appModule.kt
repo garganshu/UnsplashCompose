@@ -12,6 +12,8 @@ import io.getunleash.UnleashClient
 import io.getunleash.UnleashConfig
 import io.getunleash.UnleashContext
 import io.getunleash.polling.AutoPollingMode
+import okhttp3.OkHttpClient
+import okhttp3.logging.HttpLoggingInterceptor
 import org.koin.androidx.viewmodel.dsl.viewModel
 import org.koin.dsl.module
 import retrofit2.Retrofit
@@ -40,8 +42,13 @@ val appModule = module {
 }
 
 private fun getRetrofit(): Retrofit {
+    val client = OkHttpClient.Builder()
+        .addInterceptor(HttpLoggingInterceptor().setLevel(HttpLoggingInterceptor.Level.BODY))
+        .build()
+
     return Retrofit.Builder()
         .baseUrl(BuildConfig.UNSPLASH_API_URL)
+        .client(client)
         .addConverterFactory(GsonConverterFactory.create())
         .build()
 }
