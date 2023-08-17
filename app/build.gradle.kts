@@ -43,7 +43,7 @@ android {
     }
 
     composeOptions {
-        kotlinCompilerExtensionVersion = "1.1.0-beta01"
+        kotlinCompilerExtensionVersion = Versions.compose
     }
     packagingOptions {
         resources.excludes.run {

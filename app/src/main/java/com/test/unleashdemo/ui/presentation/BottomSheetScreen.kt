@@ -11,7 +11,6 @@ import androidx.compose.ui.unit.dp
 import com.test.unleashdemo.R
 import kotlinx.coroutines.CoroutineScope
 
-
 @OptIn(ExperimentalMaterialApi::class)
 @Composable
 fun BottomSheetScreen(
@@ -20,8 +19,7 @@ fun BottomSheetScreen(
 ) {
     val coroutineScope = rememberCoroutineScope()
     val modalSheetState = rememberModalBottomSheetState(
-        initialValue = ModalBottomSheetValue.Hidden,
-        confirmStateChange = { it != ModalBottomSheetValue.HalfExpanded }
+        initialValue = ModalBottomSheetValue.Hidden
     )
     ModalBottomSheetLayout(
         sheetShape = RoundedCornerShape(topStart = 8.dp, topEnd = 8.dp),
