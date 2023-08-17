@@ -2,6 +2,7 @@ package com.test.unleashdemo.di
 
 import android.app.DownloadManager
 import android.content.Context
+import com.readystatesoftware.chuck.ChuckInterceptor
 import com.test.unleashdemo.BuildConfig
 import com.test.unleashdemo.ui.data.*
 import com.test.unleashdemo.ui.domain.ImageDownloader
@@ -12,6 +13,8 @@ import io.getunleash.UnleashClient
 import io.getunleash.UnleashConfig
 import io.getunleash.UnleashContext
 import io.getunleash.polling.AutoPollingMode
+import okhttp3.OkHttpClient
+import okhttp3.logging.HttpLoggingInterceptor
 import org.koin.androidx.viewmodel.dsl.viewModel
 import org.koin.dsl.module
 import retrofit2.Retrofit
@@ -21,7 +24,7 @@ import retrofit2.converter.gson.GsonConverterFactory
 val appModule = module {
 
     single {
-        getRetrofit()
+        getRetrofit(get())
     }
     single {
         getApiService(get())
@@ -39,9 +42,15 @@ val appModule = module {
     viewModel { MainViewModel(get()) }
 }
 
-private fun getRetrofit(): Retrofit {
+private fun getRetrofit(context: Context): Retrofit {
+    val client = OkHttpClient.Builder()
+        .addInterceptor(HttpLoggingInterceptor().setLevel(HttpLoggingInterceptor.Level.BODY))
+        .addInterceptor(ChuckInterceptor(context))
+        .build()
+
     return Retrofit.Builder()
         .baseUrl(BuildConfig.UNSPLASH_API_URL)
+        .client(client)
         .addConverterFactory(GsonConverterFactory.create())
         .build()
 }
