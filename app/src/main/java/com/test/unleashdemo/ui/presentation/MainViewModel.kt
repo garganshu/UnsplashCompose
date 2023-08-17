@@ -21,6 +21,9 @@ class MainViewModel(
     private val _isImageDetailsEnabled: MutableStateFlow<Boolean> = MutableStateFlow(false)
     val isImageDetailsEnabled: StateFlow<Boolean> = _isImageDetailsEnabled
 
+    private val _isRefreshing: MutableStateFlow<Boolean> = MutableStateFlow(false)
+    val isRefreshing: StateFlow<Boolean> = _isRefreshing
+
     fun fetchData() {
         viewModelScope.launch {
             val viewState = when (val response = repository.getData()) {
@@ -32,6 +35,7 @@ class MainViewModel(
                 }
             }
             _dataFlow.emit(viewState)
+            _isRefreshing.emit(false)
         }
     }
 

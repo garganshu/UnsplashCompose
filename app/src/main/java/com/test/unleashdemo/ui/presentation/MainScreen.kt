@@ -60,6 +60,7 @@ fun MainScreen(
         }
     },
         content = { scope, state ->
+            val isRefreshing by viewModel.isRefreshing.collectAsState()
             ContentScreen(
                 viewState = viewModel.dataFlow.collectAsState().value, onItemClick = { image ->
                     viewModel.fetchImageDetailsState()
@@ -79,6 +80,10 @@ fun MainScreen(
                             Toast.LENGTH_LONG
                         ).show()
                     }
+                },
+                isRefreshing = isRefreshing,
+                onRefresh = {
+                    viewModel.fetchData()
                 }
             )
             BackHandler {
@@ -93,7 +98,6 @@ fun MainScreen(
     )
 }
 
-@OptIn(ExperimentalUnitApi::class)
 @Composable
 private fun TextData(
     modifier: Modifier = Modifier,
