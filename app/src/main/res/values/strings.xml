@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">UnleashDemo</string>
+    <string name="app_name">UnsplashCompose</string>
     <string name="flag_disabled">Unleash Image Details Flag Disabled</string>
     <string name="download_flag_disabled">Unleash Download Image Flag Disabled</string>
     <string name="download_image">Download Image</string>
