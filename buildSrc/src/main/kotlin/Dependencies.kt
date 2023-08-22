@@ -11,7 +11,7 @@ object Versions {
     const val compose = "1.4.1"
     const val activityCompose = "1.3.1"
     const val lifecycle = "2.3.1"
-    const val coil = "2.0.0-alpha04"
+    const val coil = "2.4.0"
     const val unleash = "0.5.5"
 }
 
